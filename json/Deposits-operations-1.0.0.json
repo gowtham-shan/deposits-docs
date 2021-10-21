@@ -1,0 +1,413 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Fixed Deposit API",
+    "description": "Api Documentation for doing CRUD operations on Banks and NBFC",
+    "contact": {
+      "name": "Support",
+      "email": "techsupport@m2p.in"
+    },
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://virtserver.swaggerhub.com/GowthamShan/Deposits-operations/1.0.0",
+      "description": "SwaggerHub API Auto Mocking"
+    },
+    {
+      "url": "https://uat.m2pfintech.com/",
+      "description": "SwaggerHub API Auto Mocking"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Financial Institutions",
+      "description": "Details about the Banks and NBFC's"
+    }
+  ],
+  "paths": {
+    "/institution": {
+      "get": {
+        "tags": [
+          "Financial Institutions"
+        ],
+        "summary": "Get Banks/NBFC's Paginated List",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Limits the number of institutions on a page",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "integer",
+              "default": 10
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "Specifies the page number",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "integer",
+              "default": 0
+            }
+          },
+          {
+            "name": "sortBy",
+            "in": "query",
+            "description": "Specifies the sorting options",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string",
+              "default": "id",
+              "enum": [
+                "id",
+                "name",
+                "rating"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully created a new Bank/NBFC",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/InstitutionResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Financial Institutions"
+        ],
+        "summary": "Update Details of Bank Or NBFC",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InstitutionResponse"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully created a new Bank/NBFC",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_200"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input values",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/inline_response_400"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Financial Institutions"
+        ],
+        "summary": "Add New Bank Or NBFC",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Institution"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully created a new Bank/NBFC",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InstitutionResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input values",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/inline_response_400"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/institution/{institutionId}": {
+      "get": {
+        "tags": [
+          "Financial Institutions"
+        ],
+        "summary": "Get Banks/NBFC Details",
+        "parameters": [
+          {
+            "name": "institutionId",
+            "in": "path",
+            "description": "Institution Id To Be Fetched",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Institution Details For Given Id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InstitutionResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Financial Institutions"
+        ],
+        "summary": "Delete existing Bank Or NBFC",
+        "parameters": [
+          {
+            "name": "institutionId",
+            "in": "path",
+            "description": "Institution Id To Be Deleted",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully created a new Bank/NBFC",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_200_1"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid Institution Id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "properties": {
+                    "errorCode": {
+                      "type": "string",
+                      "default": "DEP_008"
+                    },
+                    "errorMessage": {
+                      "type": "string",
+                      "default": "Resource Not Found"
+                    }
+                  },
+                  "items": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "PlanDetails": {
+        "required": [
+          "maxInvestment",
+          "minInvestment",
+          "minLockInPeriod",
+          "periodType"
+        ],
+        "type": "object",
+        "properties": {
+          "minInvestment": {
+            "type": "integer"
+          },
+          "maxInvestment": {
+            "type": "integer"
+          },
+          "minLockInPeriod": {
+            "type": "integer"
+          },
+          "periodType": {
+            "type": "string",
+            "nullable": false,
+            "enum": [
+              "DAYS",
+              "MONTHS",
+              "YEARS"
+            ]
+          }
+        }
+      },
+      "PlanDetailsResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "minInvestment": {
+            "type": "integer"
+          },
+          "maxInvestment": {
+            "type": "integer"
+          },
+          "minLockInPeriod": {
+            "type": "integer"
+          },
+          "periodType": {
+            "type": "string",
+            "nullable": false,
+            "enum": [
+              "DAYS",
+              "MONTHS",
+              "YEARS"
+            ]
+          }
+        }
+      },
+      "Institution": {
+        "required": [
+          "institutionType",
+          "name",
+          "planDetails"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "logoUrl": {
+            "type": "string"
+          },
+          "rating": {
+            "type": "string"
+          },
+          "ratingAgency": {
+            "type": "string"
+          },
+          "planDetails": {
+            "$ref": "#/components/schemas/PlanDetails"
+          }
+        }
+      },
+      "InstitutionResponse": {
+        "required": [
+          "id",
+          "institutionType",
+          "name",
+          "planDetails"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          },
+          "logoUrl": {
+            "type": "string"
+          },
+          "rating": {
+            "type": "string"
+          },
+          "ratingAgency": {
+            "type": "string"
+          },
+          "planDetails": {
+            "$ref": "#/components/schemas/PlanDetailsResponse"
+          }
+        }
+      },
+      "inline_response_200": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "default": "Records updated successfully"
+          },
+          "data": {
+            "$ref": "#/components/schemas/InstitutionResponse"
+          }
+        }
+      },
+      "inline_response_400": {
+        "type": "object",
+        "properties": {
+          "errorCode": {
+            "type": "string"
+          },
+          "errorMessage": {
+            "type": "string"
+          }
+        }
+      },
+      "inline_response_200_1": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "default": "success"
+          },
+          "data": {
+            "type": "object"
+          }
+        }
+      }
+    }
+  }
+}
